@@ -26,18 +26,19 @@ const storage = multer.diskStorage({
 // Create a multer instance with the storage configuration
 const upload = multer({ storage: storage });
 
-// Route to handle file upload
+
 app.post('/api/fileanalyse', upload.single('upfile'), function (req, res) {
-  // The uploaded file is available as req.file
-  if (req.file) {
-    // Respond with the file name, type, and size in JSON format
+ 
+  const file = req.file;
+
+
+  if (file) {
     res.json({
-      name: req.file.originalname,
-      type: req.file.mimetype,
-      size: req.file.size
+      name: file.originalname,  // Original file name
+      type: file.mimetype,      // File type (MIME type)
+      size: file.size           // File size in bytes
     });
   } else {
-    // If no file was uploaded, respond with an error
     res.status(400).json({ error: 'No file uploaded' });
   }
 });
