@@ -30,17 +30,14 @@ const upload = multer({ storage: storage });
 app.post('/api/fileanalyse', upload.single('upfile'), function (req, res) {
  
   const file = req.file;
-
-
-  if (file) {
-    res.json({
-      name: file.originalname,  // Original file name
-      type: file.mimetype,      // File type (MIME type)
-      size: file.size           // File size in bytes
-    });
-  } else {
-    res.status(400).json({ error: 'No file uploaded' });
+  if (!file) {
+    return res.status(400).send("No file uploaded.");
   }
+  res.json({
+    name: file.originalname,
+    type: file.mimetype,
+    size: file.size,
+  });
 });
 
 // Specify a folder where the uploaded files will be stored
